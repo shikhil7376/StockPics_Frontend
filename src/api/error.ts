@@ -10,6 +10,8 @@ interface IErrorResponse{
 const errorHandle = (error:Error | AxiosError)=>{
    if(axios.isAxiosError(error)){
     const axiosError = error as AxiosError;
+    console.log('axios',axiosError.response?.data);
+    
     if (axiosError.response?.data) {
         const errorResponse = axiosError.response.data as IErrorResponse;
         if(axiosError.response.status === 403 ){

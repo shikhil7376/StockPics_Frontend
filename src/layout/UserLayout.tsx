@@ -9,7 +9,6 @@ const UserLayout = () => {
   return (
     <AuroraBackground>
       <div className="w-full h-full ">
-         {!hideHeaderRoutes.includes(location.pathname) && <Header/>}
         <Outlet/>
       </div>
     </AuroraBackground>

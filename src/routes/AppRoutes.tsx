@@ -13,10 +13,10 @@ const AppRoutes = () => {
       <Routes>
         <Route element={<UserLayout />}>
           <Route path="/" element={<Dashboard />} />
-          <Route path="/login" element={<Login />} />
-          <Route path='/signup' element={<Signup/>}/>
-          <Route path='/otp' element={<Otp/>}/>
         </Route>
+        <Route path='/signup' element={<Signup/>}/>
+        <Route path="/login" element={<Login />} />
+        <Route path='/otp' element={<Otp/>}/>
       </Routes>
     </Suspense>
   );
