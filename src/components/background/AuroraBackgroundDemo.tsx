@@ -13,14 +13,14 @@ const AuroraBackgroundDemo = () => {
         duration: 0.8,
         ease: "easeInOut",
       }}
-      className="relative flex flex-col gap-4 items-center justify-center px-4 h-screen mx-auto overflow-y-scroll scrollbar-hide"
+      className=" flex flex-col gap-4 items-center justify-center px-4 h-[80vh] "
     >
        <div className="absolute top-10 left-10 md:top-[10vh] md:left-16 transform -rotate-6 opacity-90 z-0 ">
-        <img
+        {/* <img
           src="https://mir-s3-cdn-cf.behance.net/project_modules/fs/23c8ca56299053.59a8587611b02.jpg" // Replace with your image URL
           alt="Stylish Note Background"
           className="w-[300px] md:w-[300px] rounded-lg shadow-lg"
-        />
+        /> */}
       </div>
       <div className="text-3xl md:text-7xl font-bold dark:text-white text-center">
       Discover Stunning Visuals Every Day

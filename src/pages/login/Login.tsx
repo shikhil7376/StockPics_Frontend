@@ -1,9 +1,62 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom'; // Ensure you're using React Router for navigation
+import { Link, useNavigate } from 'react-router-dom'; // Ensure you're using React Router for navigation
+import validator from "validator";
+import { signupTypes } from '../../interface/dataTypes';
+import errorHandle from '../../api/error';
+import { useState,FormEvent } from 'react';
+import { login } from '../../api/user';
 
 
 const Login = () => {
+  const navigate = useNavigate();
+
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [errors, setErrors] = useState<signupTypes>({});
+
+  const validateForm = () => {
+    const newErrors:signupTypes = {};
+    if (!email.trim() || !validator.isEmail(email)) {
+      newErrors.email = 'Valid email is required';
+    }
+    if (!password.trim()) {
+      newErrors.password = 'Password is required';
+    } else if (password.length < 6) {
+      newErrors.password = 'Password must contain at least 6 characters';
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const submitHandler = async (e:FormEvent<HTMLFormElement>) => {
+    try {
+        e.preventDefault();
+        const isValid = validateForm();
+        if (isValid) {
+          const data = {
+            email: email,
+            password: password,
+          };
+            const response = await login(data)
+            console.log('respu',response);
+            
+            if(response?.data){
+               localStorage.setItem("token",response.data.token)
+               navigate('/')
+            }
+        }
+    } catch (error) {
+      if (error instanceof Error) {
+        errorHandle(error); // Handle standard Error objects
+      } else {
+        console.error("Unexpected error:", error); // Log non-standard errors
+        errorHandle(new Error("An unexpected error occurred."));
+      }  
+    }
+   
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-custom-gradient">
       <div className="bg-white p-8 rounded-3xl shadow-lg w-[95%] sm:w-full max-w-md">
@@ -20,7 +73,7 @@ const Login = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.5 }}
         >
-          <form>
+          <form onSubmit={submitHandler}>
             <div className="mb-4">
               <label
                 className="block text-gray-700 text-sm mb-2 font-semibold"
@@ -33,7 +86,10 @@ const Login = () => {
                 name="email"
                 id="email"
                 placeholder="Email"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"              />
+                value={email}
+                onChange={(e)=>setEmail(e.target.value)}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"/>
+            {errors.email && <p className="mt-2 text-sm font-semibold text-red-600">{errors.email}</p>}
             </div>
             <div className="mb-6">
               <label
@@ -47,8 +103,11 @@ const Login = () => {
                 name="password"
                 id="password"
                 placeholder="Password"
+                value={password}
+                onChange={(e)=>setPassword(e.target.value)}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
               />
+           {errors.password && <p className="mt-2 text-sm font-semibold text-red-600">{errors.password}</p>}
             </div>
             <div className="flex items-center justify-center">
               <button

@@ -34,3 +34,13 @@ export const resendOtp = async(email:string)=>{
         return errorHandle(err);
     }
 }
+
+export const login = async(data:signupTypes)=>{
+    try {
+        const response = await api.post('/user/login',data)
+        return response
+    } catch (error) {
+        const err: Error = error as Error;
+        return errorHandle(err);
+    }
+}
