@@ -1,7 +1,12 @@
 import React from 'react'
 import { AnimatedTestimonials } from '../../components/ui/animated-testimonials'
+import { uploadDataTypes } from '../../interface/dataTypes';
 
-const ViewImages = () => {
+interface ViewImagesProps {
+  data: uploadDataTypes[];
+}
+
+const ViewImages: React.FC<ViewImagesProps> = ({data}) => {
   const testimonials = [
     {
       quote:
@@ -39,7 +44,7 @@ const ViewImages = () => {
       src: "https://images.unsplash.com/photo-1624561172888-ac93c696e10c?q=80&w=2592&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     },
   ];
-  return <AnimatedTestimonials testimonials={testimonials} />;
+  return <AnimatedTestimonials testimonials={data} />;
 }
 
 export default ViewImages

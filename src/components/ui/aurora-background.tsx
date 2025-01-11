@@ -17,7 +17,7 @@ export const AuroraBackground = ({
     <main>
       <div
         className={cn(
-          "relative h-[100vh] overflow-y-scroll scrollbar-hide", // Ensure relative position and scrolling
+          "relative h-[100vh] overflow-y-scroll scrollbar-hide ", // Ensure relative position and scrolling
           className
         )}
         {...props}

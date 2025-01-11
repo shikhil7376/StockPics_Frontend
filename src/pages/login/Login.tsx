@@ -6,10 +6,14 @@ import { signupTypes } from '../../interface/dataTypes';
 import errorHandle from '../../api/error';
 import { useState,FormEvent } from 'react';
 import { login } from '../../api/user';
+import { useDispatch } from 'react-redux';
+import { setCredential } from '../../redux/slices/AuthSlice';
+import toast from 'react-hot-toast';
 
 
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -43,6 +47,8 @@ const Login = () => {
             
             if(response?.data){
                localStorage.setItem("token",response.data.token)
+               toast.success(response.data.message)
+                dispatch(setCredential(response?.data?.userData))
                navigate('/')
             }
         }
@@ -124,7 +130,7 @@ const Login = () => {
           <p className="text-sm text-gray-600 font-semibold">
             Don't have an account?{' '}
             <Link
-              to="/register"
+              to="/signup"
               className="font-semibold text-indigo-600 hover:text-indigo-500"
             >
               Create one

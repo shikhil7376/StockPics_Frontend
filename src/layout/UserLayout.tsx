@@ -5,7 +5,7 @@ import { Outlet,useLocation } from 'react-router-dom'
 
 const UserLayout = () => {
   const location = useLocation()
-  const hideHeaderRoutes = ['/login','/signup','/otp']
+  const hideHeaderRoutes = ['/login','/signup','/Otp']
   return (
     <>
     <AuroraBackground>     

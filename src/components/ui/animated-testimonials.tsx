@@ -2,23 +2,19 @@
 
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 import { motion, AnimatePresence } from "framer-motion";
-
+import { uploadDataTypes } from "../../interface/dataTypes";
 import { useEffect, useState } from "react";
 
-type Testimonial = {
-  quote: string;
-  name: string;
-  designation: string;
-  src: string;
-};
+
 export const AnimatedTestimonials = ({
   testimonials,
   autoplay = false,
 }: {
-  testimonials: Testimonial[];
+  testimonials:  uploadDataTypes[];
   autoplay?: boolean;
 }) => {
   const [active, setActive] = useState(0);
+console.log('testimonila',testimonials);
 
   const handleNext = () => {
     setActive((prev) => (prev + 1) % testimonials.length);
@@ -50,7 +46,7 @@ export const AnimatedTestimonials = ({
             <AnimatePresence>
               {testimonials.map((testimonial, index) => (
                 <motion.div
-                  key={testimonial.src}
+                  key={testimonial.url}
                   initial={{
                     opacity: 0,
                     scale: 0.9,
@@ -80,8 +76,8 @@ export const AnimatedTestimonials = ({
                   className="absolute inset-0 origin-bottom"
                 >
                   <img
-                    src={testimonial.src}
-                    alt={testimonial.name}
+                    src={testimonial.url}
+                    alt={testimonial.description}
                     width={500}
                     height={500}
                     draggable={false}
@@ -112,14 +108,10 @@ export const AnimatedTestimonials = ({
               ease: "easeInOut",
             }}
           >
-            <h3 className="text-2xl font-bold dark:text-white text-black">
-              {testimonials[active].name}
-            </h3>
-            <p className="text-sm text-gray-500 dark:text-neutral-500">
-              {testimonials[active].designation}
-            </p>
+          
+          
             <motion.p className="text-lg text-gray-500 mt-8 dark:text-neutral-300">
-              {testimonials[active].quote.split(" ").map((word, index) => (
+              {testimonials[active].description.split(" ").map((word, index) => (
                 <motion.span
                   key={index}
                   initial={{
