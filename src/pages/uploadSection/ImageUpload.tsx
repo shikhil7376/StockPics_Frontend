@@ -8,13 +8,15 @@ import { uploadData } from '../../api/project';
 import { uploadDataTypes } from '../../interface/dataTypes';
 import toast from 'react-hot-toast';
 
-
 interface FileWithPreview extends File {
   preview: string;
   description?: string;
 }
+interface ImageUploadProps {
+  setData: React.Dispatch<React.SetStateAction<uploadDataTypes[]>>; // Type for setData
+}
 
-const ImageUpload: React.FC = () => {
+const ImageUpload: React.FC<ImageUploadProps> = ({ setData }) => {
   const [files, setFiles] = useState<FileWithPreview[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string>("");
@@ -79,6 +81,7 @@ const ImageUpload: React.FC = () => {
            const updateResponse = await uploadData(uploadedFiles)
            if(updateResponse){
             toast.success("upload succesfully")
+            setData((prevData)=>[...prevData,...updateResponse.data.data])
             console.log('updateResponse',updateResponse);
             setFiles([]); 
            }
@@ -102,9 +105,9 @@ const ImageUpload: React.FC = () => {
     <div key={index}>
       <div className="flex gap-3">
         <img src={file.preview} className="w-[100px] h-[100px] rounded-lg" onLoad={() => { URL.revokeObjectURL(file.preview) }} />
-        <div>
+        <div className='h-[100px] w-[500px] overflow-y-scroll scrollbar-hide'>
           <Textarea
-            className="max-w-xs"
+            className="max-w-xs overflow-y-scroll scrollbar-hide"
             label="Description"
             placeholder="Enter your description"
             value={file.description}

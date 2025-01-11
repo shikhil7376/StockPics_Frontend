@@ -37,7 +37,7 @@ const Dashboard = () => {
     <div className=''> 
           <AuroraBackgroundDemo/>  
           {data.length > 0 && <ViewImages data={data} />}
-          <ImageUpload />
+          <ImageUpload  setData= {setData}/>
       </div>
   )
 }

@@ -32,7 +32,7 @@ export default {
     },
   },
   darkMode: "class",
-  plugins: [nextui(),addVariablesForColors]
+  plugins: [nextui(),addVariablesForColors,require('tailwind-scrollbar-hide')]
 }
 
 function addVariablesForColors({ addBase, theme }) {
