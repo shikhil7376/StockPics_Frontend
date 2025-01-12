@@ -11,3 +11,7 @@ export interface uploadDataTypes {
     description: string;
     userid:string;
 }
+
+export interface getDataTypes extends uploadDataTypes{
+    id:string
+}

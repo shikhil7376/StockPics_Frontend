@@ -42,12 +42,12 @@ const handleSignIn = ()=>{
       </NavbarBrand>
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <NavbarItem>
-          <Link color="foreground" href="#">
+          <Link color="foreground" href="/">
             Home
           </Link>
         </NavbarItem>
         <NavbarItem isActive>
-          <Link aria-current="page" href="#">
+          <Link aria-current="page" href="view">
             view
           </Link>
         </NavbarItem>

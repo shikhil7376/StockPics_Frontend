@@ -12,12 +12,22 @@ export const uploadData = async(data:uploadDataTypes[])=>{
     }
 }
 
-export const getData = async()=>{
-    try {
-        const response = await api.get('/project/getData')
+export const getData = async(id:string)=>{
+    try {  
+        const response = await api.get(`/project/getData?userid=${id}`)
         return response
     } catch (error) {
         const err: Error = error as Error;
         return errorHandle(err);
+    }
+}
+
+export const deleteData = async( id:string, userid:string )=>{
+    try {        
+       const response = await api.delete(`/project/deleteData/${id}/${userid}`) 
+       return response
+    } catch (error) {
+        const err: Error = error as Error;
+        return errorHandle(err); 
     }
 }

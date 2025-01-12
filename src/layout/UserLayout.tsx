@@ -7,12 +7,11 @@ const UserLayout = () => {
   const location = useLocation()
   const hideHeaderRoutes = ['/login','/signup','/Otp']
   return (
-    <>
-    <AuroraBackground>     
+    < div className='h-[100vh] '>
+    
         {!hideHeaderRoutes.includes(location.pathname) && <Header/>}
         <Outlet/>
-    </AuroraBackground>
-    </>
+    </div>
   )
 }
 

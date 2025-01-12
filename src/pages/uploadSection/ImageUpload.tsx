@@ -12,11 +12,8 @@ interface FileWithPreview extends File {
   preview: string;
   description?: string;
 }
-interface ImageUploadProps {
-  setData: React.Dispatch<React.SetStateAction<uploadDataTypes[]>>; // Type for setData
-}
 
-const ImageUpload: React.FC<ImageUploadProps> = ({ setData }) => {
+const ImageUpload: React.FC = () => {
   const [files, setFiles] = useState<FileWithPreview[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string>("");
@@ -70,7 +67,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ setData }) => {
           );
 
           return {
-            url: response.data.secure_url,
+            url: response.data.secure_url || "",
             description: file.description || "",
             userid:userdata?._id || ""
           };
@@ -81,8 +78,6 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ setData }) => {
            const updateResponse = await uploadData(uploadedFiles)
            if(updateResponse){
             toast.success("upload succesfully")
-            setData((prevData)=>[...prevData,...updateResponse.data.data])
-            console.log('updateResponse',updateResponse);
             setFiles([]); 
            }
        }

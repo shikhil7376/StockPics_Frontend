@@ -2,12 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-  
-.no-scrollbar {
+
+  #root {
+    overflow-y: scroll;
     scrollbar-width: none; /* For Firefox */
-    -ms-overflow-style: none; /* For Internet Explorer and Edge */
+    height: 100vh;
   }
   
-  .no-scrollbar::-webkit-scrollbar {
-    display: none; /* For Chrome, Safari, and Opera */
+  #root::-webkit-scrollbar {
+    display: none; /* For Chrome, Safari, and Edge */
   }
