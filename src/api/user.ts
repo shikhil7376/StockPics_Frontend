@@ -15,9 +15,7 @@ export const signup = async (userData:signupTypes)=>{
 }
 
 export const otpVerify = async (code:number)=>{
-    try {
-        console.log('code',code);
-        
+    try { 
         const response = await api.patch('/user/verify',{code})
         return response
     } catch (error) {
@@ -46,3 +44,34 @@ export const login = async(data:signupTypes)=>{
     }
 }
 
+export const resetPasswordRequest = async (email: string) => {
+     try {
+       
+        
+        const response = await api.post(`/user/reset-password/request`, { email });
+        return response;
+     } catch (error) {
+        const err: Error = error as Error;
+        return errorHandle(err);
+     }
+  };
+
+  export const verifyOTP = async (email: string, otp: string) => {
+    try {
+        const response = await api.post(`/api/reset-password/verify`, { email, otp });
+        return response;
+    } catch (error) {
+        const err: Error = error as Error;
+        return errorHandle(err);  
+    }
+  };
+
+  export const resetPassword = async (email: string, newPassword: string) => {
+      try {
+        const response = await api.post(`/api/reset-password/reset`, { email, newPassword });
+        return response;
+      } catch (error) {
+        const err: Error = error as Error;
+        return errorHandle(err); 
+      }
+  };

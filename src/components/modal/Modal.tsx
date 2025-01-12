@@ -26,9 +26,9 @@ const DetailModal: React.FC<DetailModalProps> = ({ isOpen, onOpenChange, item, o
     useEffect(() => {
         if (!isOpen) {
           setSelectedFile(null); // Reset selected file when modal closes
-          setIsEditing(false); // Reset editing state
-          setEditedDescription(item.description); // Reset description to original value
+          setIsEditing(false); // Reset editing state// Reset description to original value
         }
+        setEditedDescription(item.description); 
       }, [isOpen, item.description]);
 
 
@@ -90,7 +90,13 @@ const DetailModal: React.FC<DetailModalProps> = ({ isOpen, onOpenChange, item, o
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader className="flex flex-col gap-1">Details</ModalHeader>
+            <ModalHeader className="flex flex-col gap-1">
+            {isLoading ? (
+                <Spinner />
+              ) : (
+                <MdDelete color='red' size={25} onClick={handleDelete} className=' '  />
+              )}
+            </ModalHeader>
             <ModalBody >
               <div className="flex flex-col items-center gap-3">
                 <div className="relative h-[150px] w-[150px] border border-gray-300 rounded-md">
@@ -130,17 +136,13 @@ const DetailModal: React.FC<DetailModalProps> = ({ isOpen, onOpenChange, item, o
             </ModalBody>
             <ModalFooter>
               {isEditing ? (
-                <Button onClick={handleSave} isDisabled={isUploading}>
+                <Button onClick={handleSave} isDisabled={isUploading} className='bg-blue-400 text-white font-semibold'>
                   Save
                 </Button>
               ) : (
                 <FaEdit size={25} onClick={() => setIsEditing(true)} />
               )}
-              {isLoading ? (
-                <Spinner />
-              ) : (
-                <MdDelete size={25} onClick={handleDelete} />
-              )}
+              
             </ModalFooter>
           </>
         )}

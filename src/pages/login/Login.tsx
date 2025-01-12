@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'; // Ensure you're using Rea
 import validator from "validator";
 import { signupTypes } from '../../interface/dataTypes';
 import errorHandle from '../../api/error';
-import { useState,FormEvent } from 'react';
+import { useState, FormEvent } from 'react';
 import { login } from '../../api/user';
 import { useDispatch } from 'react-redux';
 import { setCredential } from '../../redux/slices/AuthSlice';
@@ -20,7 +20,7 @@ const Login = () => {
   const [errors, setErrors] = useState<signupTypes>({});
 
   const validateForm = () => {
-    const newErrors:signupTypes = {};
+    const newErrors: signupTypes = {};
     if (!email.trim() || !validator.isEmail(email)) {
       newErrors.email = 'Valid email is required';
     }
@@ -33,34 +33,34 @@ const Login = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const submitHandler = async (e:FormEvent<HTMLFormElement>) => {
+  const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     try {
-        e.preventDefault();
-        const isValid = validateForm();
-        if (isValid) {
-          const data = {
-            email: email,
-            password: password,
-          };
-            const response = await login(data)
-            console.log('respu',response);
-            
-            if(response?.data){
-               localStorage.setItem("token",response.data.token)
-               toast.success(response.data.message)
-                dispatch(setCredential(response?.data?.userData))
-               navigate('/')
-            }
+      e.preventDefault();
+      const isValid = validateForm();
+      if (isValid) {
+        const data = {
+          email: email,
+          password: password,
+        };
+        const response = await login(data)
+        console.log('respu', response);
+
+        if (response?.data) {
+          localStorage.setItem("token", response.data.token)
+          toast.success(response.data.message)
+          dispatch(setCredential(response?.data?.userData))
+          navigate('/')
         }
+      }
     } catch (error) {
       if (error instanceof Error) {
         errorHandle(error); // Handle standard Error objects
       } else {
         console.error("Unexpected error:", error); // Log non-standard errors
         errorHandle(new Error("An unexpected error occurred."));
-      }  
+      }
     }
-   
+
   };
 
   return (
@@ -93,9 +93,9 @@ const Login = () => {
                 id="email"
                 placeholder="Email"
                 value={email}
-                onChange={(e)=>setEmail(e.target.value)}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"/>
-            {errors.email && <p className="mt-2 text-sm font-semibold text-red-600">{errors.email}</p>}
+                onChange={(e) => setEmail(e.target.value)}
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" />
+              {errors.email && <p className="mt-2 text-sm font-semibold text-red-600">{errors.email}</p>}
             </div>
             <div className="mb-6">
               <label
@@ -110,10 +110,10 @@ const Login = () => {
                 id="password"
                 placeholder="Password"
                 value={password}
-                onChange={(e)=>setPassword(e.target.value)}
+                onChange={(e) => setPassword(e.target.value)}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
               />
-           {errors.password && <p className="mt-2 text-sm font-semibold text-red-600">{errors.password}</p>}
+              {errors.password && <p className="mt-2 text-sm font-semibold text-red-600">{errors.password}</p>}
             </div>
             <div className="flex items-center justify-center">
               <button
@@ -134,6 +134,14 @@ const Login = () => {
               className="font-semibold text-indigo-600 hover:text-indigo-500"
             >
               Create one
+            </Link>
+          </p>
+          <p className="text-sm text-gray-600 font-semibold">
+            <Link
+              to="/reset-password"
+              className="font-semibold text-indigo-600 hover:text-indigo-500"
+            >
+              Forgot your password?
             </Link>
           </p>
         </div>

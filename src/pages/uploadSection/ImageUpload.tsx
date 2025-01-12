@@ -7,6 +7,7 @@ import { RootState } from '../../redux/store';
 import { uploadData } from '../../api/project';
 import { uploadDataTypes } from '../../interface/dataTypes';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 interface FileWithPreview extends File {
   preview: string;
@@ -19,6 +20,9 @@ const ImageUpload: React.FC = () => {
   const [error, setError] = useState<string>("");
   const userdata = useSelector((state:RootState) => state.user.userdata);
 
+  const navigate = useNavigate();
+
+  const MAX_DESCRIPTION_LENGTH = 50;
 
   const { getRootProps, getInputProps } = useDropzone({
     accept: {
@@ -40,11 +44,11 @@ const ImageUpload: React.FC = () => {
   // Function to validate files' descriptions
   const validateFiles = (files: FileWithPreview[]) => {
     const filesWithMissingDescriptions = files.filter(
-      (file) => !file.description || file.description.trim() === ""
+      (file) => !file.description || file.description.trim() === "" ||   file.description.length > MAX_DESCRIPTION_LENGTH
     );
     
     if (filesWithMissingDescriptions.length > 0) {
-      setError("All files must have a description.");
+      setError(`Description must be between 1 and ${MAX_DESCRIPTION_LENGTH} characters.`);
       return false;  // Validation failed
     }
     setError("");  // Clear error message
@@ -52,6 +56,10 @@ const ImageUpload: React.FC = () => {
   };
 
   const handleSubmit = async (validFiles: FileWithPreview[]) => {
+    if(!userdata){
+      toast.error("please login to upload files!!!!..")
+      return
+    }
     setIsUploading(true);
     try {
       const uploadedFiles:uploadDataTypes[] = await Promise.all(
@@ -77,7 +85,9 @@ const ImageUpload: React.FC = () => {
        if(uploadedFiles && uploadedFiles.length > 0){
            const updateResponse = await uploadData(uploadedFiles)
            if(updateResponse){
+            
             toast.success("upload succesfully")
+            navigate('/view')
             setFiles([]); 
            }
        }
@@ -97,12 +107,12 @@ const ImageUpload: React.FC = () => {
   };
 
   const thumbs = files.map((file, index) => (
-    <div key={index}>
+    <div key={index} className=' p-1'>
       <div className="flex gap-3">
         <img src={file.preview} className="w-[100px] h-[100px] rounded-lg" onLoad={() => { URL.revokeObjectURL(file.preview) }} />
-        <div className='h-[100px] w-[500px] overflow-y-scroll scrollbar-hide'>
+        <div className='h-[100px] w-[400px] '>
           <Textarea
-            className="max-w-xs overflow-y-scroll scrollbar-hide"
+            className="h-full overflow-y-auto scrollbar-hide"
             label="Description"
             placeholder="Enter your description"
             value={file.description}
@@ -112,9 +122,17 @@ const ImageUpload: React.FC = () => {
               setFiles(updatedFiles);
             }} // Update description state
           />
+         <p className="text-xs text-gray-500">
+            {file.description?.length}/{MAX_DESCRIPTION_LENGTH} characters
+          </p>
           {!file.description?.trim() && error && (
-            <p className="text-red-500 text-sm text-center">Description is required.</p>
+            <p className="text-red-500 text-sm text-center">All Description is required.</p>
           )}
+         {file.description && file.description.length > MAX_DESCRIPTION_LENGTH && (
+          <p className="text-red-500 text-sm text-center">
+           Description exceeds the maximum length of {MAX_DESCRIPTION_LENGTH} characters.
+              </p>
+             )}
         </div>
       </div>
     </div>

@@ -2,7 +2,8 @@ import React, { Suspense, lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import UserLayout from '../layout/UserLayout';
 import Spinner from '../components/ui/spinner';
-import Sample from '../pages/Sample';
+import ProtectedRoute from '../protected/ProtectedRoute';
+import ResetPassword from '../pages/resetpassword/ResetPassword';
 
 
 const Dashboard = lazy(() => import('../pages/dashboard/Dashboard'));
@@ -15,11 +16,14 @@ const AppRoutes = () => {
     <Suspense fallback={<Spinner />}>
       <Routes>
         <Route element={<UserLayout />}>
-          <Route path="/" element={<Dashboard/>} />
+        <Route path="/" element={<Dashboard/>} />
+        <Route element={<ProtectedRoute/>}>
+          <Route path='/view' element={<View/>}/>
+          </Route>
           <Route path='/signup' element={<Signup/>}/>
           <Route path="/login" element={<Login />} />
           <Route path='/otp' element={<Otp/>}/>
-          <Route path='/view' element={<View/>}/>
+          <Route path='/reset-password' element={<ResetPassword/>}/>
         </Route>
       </Routes>
     </Suspense>
