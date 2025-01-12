@@ -4,6 +4,7 @@ import UserLayout from '../layout/UserLayout';
 import Spinner from '../components/ui/spinner';
 import ProtectedRoute from '../protected/ProtectedRoute';
 import ResetPassword from '../pages/resetpassword/ResetPassword';
+import NewPassword from '../pages/resetpassword/NewPassword';
 
 
 const Dashboard = lazy(() => import('../pages/dashboard/Dashboard'));
@@ -24,6 +25,7 @@ const AppRoutes = () => {
           <Route path="/login" element={<Login />} />
           <Route path='/otp' element={<Otp/>}/>
           <Route path='/reset-password' element={<ResetPassword/>}/>
+          <Route path='/new-password' element={<NewPassword/>}/>
         </Route>
       </Routes>
     </Suspense>

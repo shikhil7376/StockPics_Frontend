@@ -44,34 +44,22 @@ export const login = async(data:signupTypes)=>{
     }
 }
 
-export const resetPasswordRequest = async (email: string) => {
-     try {
-       
-        
-        const response = await api.post(`/user/reset-password/request`, { email });
-        return response;
-     } catch (error) {
-        const err: Error = error as Error;
-        return errorHandle(err);
-     }
-  };
-
-  export const verifyOTP = async (email: string, otp: string) => {
+export const resetOtp = async(email:string)=>{
     try {
-        const response = await api.post(`/api/reset-password/verify`, { email, otp });
-        return response;
+        const response = await api.post('/user/resetotp',{email})
+        return response
     } catch (error) {
         const err: Error = error as Error;
-        return errorHandle(err);  
+        return errorHandle(err);
     }
-  };
+}
 
-  export const resetPassword = async (email: string, newPassword: string) => {
-      try {
-        const response = await api.post(`/api/reset-password/reset`, { email, newPassword });
-        return response;
-      } catch (error) {
+export const resetpassword = async(data:{email:string,password:string})=>{
+    try {
+        const response = await api.post('/user/resetpassword',{data})
+        return response
+    } catch (error) {
         const err: Error = error as Error;
-        return errorHandle(err); 
-      }
-  };
+        return errorHandle(err);
+    }
+}

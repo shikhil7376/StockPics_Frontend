@@ -4,7 +4,7 @@ import { Outlet,useLocation } from 'react-router-dom'
 
 const UserLayout = () => {
   const location = useLocation()
-  const hideHeaderRoutes = ['/login','/signup','/Otp','/reset-password']
+  const hideHeaderRoutes = ['/login','/signup','/Otp','/reset-password','/new-password']
   return (
     < div >
         {!hideHeaderRoutes.includes(location.pathname) && <Header/>}
