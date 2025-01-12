@@ -9,6 +9,7 @@ import { RootState } from '../../redux/store';
 import { getDataTypes } from '../../interface/dataTypes';
 import DetailModal from '../../components/modal/Modal';
 import { deleteData } from '../../api/project';
+import { updateData } from '../../api/project';
 
 
 const CardView = () => {
@@ -53,9 +54,7 @@ const CardView = () => {
         });
     };
 
-    const handleImageClick = (item: getDataTypes) => {
-        console.log('hey hey');
-        
+    const handleImageClick = (item: getDataTypes) => { 
         setSelectedItem(item);
         setIsModalOpen(true);
     };
@@ -73,9 +72,24 @@ const CardView = () => {
                 console.error("Unexpected error:", error); // Log non-standard errors
                 errorHandle(new Error("An unexpected error occurred."));
               } 
-        }
-         
+        } 
     }
+
+    const handleUpdate = async(updatedItem: getDataTypes) => { 
+        try {
+            const response = await updateData(updatedItem)
+            if(response?.data.success){
+                setData((prevItems) =>
+                    prevItems.map((item) => (item.id === updatedItem.id ? updatedItem : item))
+                );
+            }
+
+        } catch (error) {
+              console.error("Unexpected error:", error); // Log non-standard errors
+                errorHandle(new Error("An unexpected error occurred."));
+        }       
+      
+    };
 
     return (
         <div className='flex flex-col items-center'>
@@ -94,6 +108,7 @@ const CardView = () => {
                     onOpenChange={setIsModalOpen}
                     item={selectedItem}
                     onDelete={handleDelete}
+                    onUpdate={handleUpdate}
                 />
             )}
         </div>

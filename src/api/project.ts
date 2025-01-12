@@ -1,6 +1,7 @@
 import {uploadDataTypes } from "../interface/dataTypes";
 import api from "../services/axios";
 import errorHandle from "./error";
+import { getDataTypes } from "../interface/dataTypes";
 
 export const uploadData = async(data:uploadDataTypes[])=>{
     try {
@@ -30,4 +31,14 @@ export const deleteData = async( id:string, userid:string )=>{
         const err: Error = error as Error;
         return errorHandle(err); 
     }
+}
+
+export const updateData = async(updatedFields:getDataTypes)=>{
+     try {
+        const response = await api.put(`/project/update`,updatedFields)
+        return response
+     } catch (error) {
+        const err: Error = error as Error;
+        return errorHandle(err); 
+     }
 }

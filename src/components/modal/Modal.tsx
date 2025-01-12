@@ -13,9 +13,10 @@ interface DetailModalProps {
     onOpenChange: (open: boolean) => void;
     item: getDataTypes;
     onDelete: (id: string) => void;
+    onUpdate: (updatedItem: getDataTypes) => void;
 }
 
-const DetailModal: React.FC<DetailModalProps> = ({ isOpen, onOpenChange, item, onDelete }) => {
+const DetailModal: React.FC<DetailModalProps> = ({ isOpen, onOpenChange, item, onDelete,onUpdate }) => {
     const [isEditing, setIsEditing] = useState(false)
     const [editedDescription, setEditedDescription] = useState(item.description)
     const [isLoading, setIsLoading] = useState(false);
@@ -64,54 +65,87 @@ const DetailModal: React.FC<DetailModalProps> = ({ isOpen, onOpenChange, item, o
       };
 
     const handleSave = async()=>{
+        let uploadedImageUrl = null;
+        if (selectedFile) {
+            setIsUploading(true);
+            uploadedImageUrl = await uploadToCloudinary(selectedFile);
+            setIsUploading(false);
+          }
+          const updatedFields: Partial<getDataTypes> = {};
+          if (editedDescription !== item.description) {
+            updatedFields.description = editedDescription;
+          }
+          if (uploadedImageUrl) {
+            updatedFields.url = uploadedImageUrl;
+          }
+          if (Object.keys(updatedFields).length > 0) {
+            const updatedItem = { ...item, ...updatedFields };
+            onUpdate(updatedItem); // Use the onUpdate prop to update the item
+        }
+        onOpenChange(false);
     }
 
     return (
-        <>
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-                <ModalContent>
-                    {(onClose) => (
-                        <>
-                            <ModalHeader className="flex flex-col gap-1">Details</ModalHeader>
-                            <ModalBody>
-                                <div className='flex flex-col items-center gap-3'>
-                                    <input
-                                        type="file"
-                                        disabled={!isEditing}
-                                        onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
-                                    />
-                                    {selectedFile ? (
-                                        <img src={URL.createObjectURL(selectedFile)} className="h-[150px] w-[150px]" alt="Preview" />
-                                    ) : (
-                                        <img src={item.url} className="h-[150px] w-[150px]" alt="Uploaded" />
-                                    )}
-                                    <div className='flex flex-col'>
-                                        <Textarea
-                                            className="w-[300px] "
-                                            label="Description"
-                                            placeholder="Enter your description"
-                                            value={editedDescription}
-                                              disabled={!isEditing}
-                                          onChange={(e) => setEditedDescription(e.target.value)}
-                                        />
-                                    </div>
-                                </div>
-                            </ModalBody>
-                            <ModalFooter>
-                                {isUploading ? (
-                                    <Spinner />
-                                ) : isEditing ? (
-                                    <Button onClick={handleSave}>Save</Button>
-                                ) : (
-                                    <FaEdit size={25} onClick={() => setIsEditing(true)} />
-                                )}
-                                {isLoading ? (<><Spinner /></>) : (<MdDelete size={25} onClick={handleDelete} />)}
-                            </ModalFooter>
-                        </>
-                    )}
-                </ModalContent>
-            </Modal>
-        </>
+        <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+      <ModalContent>
+        {(onClose) => (
+          <>
+            <ModalHeader className="flex flex-col gap-1">Details</ModalHeader>
+            <ModalBody >
+              <div className="flex flex-col items-center gap-3">
+                <div className="relative h-[150px] w-[150px] border border-gray-300 rounded-md">
+                  {isUploading ? (
+                    <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-50">
+                      <Spinner />
+                    </div>
+                  ) : selectedFile ? (
+                    <img
+                      src={URL.createObjectURL(selectedFile)}
+                      className="h-full w-full object-cover rounded-md"
+                      alt="Preview"
+                    />
+                  ) : (
+                    <img
+                      src={item.url}
+                      className="h-full w-full object-cover rounded-md"
+                      alt="Uploaded"
+                    />
+                  )}
+                </div>
+                <input
+                  type="file"
+                  disabled={!isEditing}
+                  onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
+                  className="mt-2  w-[400px] overflow-hide "
+                />
+                <Textarea
+                  className="w-[300px]"
+                  label="Description"
+                  placeholder="Enter your description"
+                  value={editedDescription}
+                  disabled={!isEditing}
+                  onChange={(e) => setEditedDescription(e.target.value)}
+                />
+              </div>
+            </ModalBody>
+            <ModalFooter>
+              {isEditing ? (
+                <Button onClick={handleSave} isDisabled={isUploading}>
+                  Save
+                </Button>
+              ) : (
+                <FaEdit size={25} onClick={() => setIsEditing(true)} />
+              )}
+              {isLoading ? (
+                <Spinner />
+              ) : (
+                <MdDelete size={25} onClick={handleDelete} />
+              )}
+            </ModalFooter>
+          </>
+        )}
+      </ModalContent>
+    </Modal>
     )
 }
 
