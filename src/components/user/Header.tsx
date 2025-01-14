@@ -34,20 +34,28 @@ const handleSignIn = ()=>{
     navigate('/login')
 }
 
+const handleView = ()=>{
+   if(userdata){
+      navigate('view')
+   }else{
+    toast.error('Please login')
+   }
+}
+
   return (
     <Navbar>
       <NavbarBrand>
-        <AcmeLogo />
+        <AcmeLogo  />
         <p className="font-bold text-inherit">STOCK_PICS</p>
       </NavbarBrand>
-      <NavbarContent className="hidden sm:flex gap-4" justify="center">
-        <NavbarItem>
+      <NavbarContent className="" justify="center">
+        <NavbarItem className='hidden sm:flex gap-4'>
           <Link color="foreground" href="/">
             Home
           </Link>
         </NavbarItem>
         <NavbarItem isActive>
-          <Link aria-current="page" href="view">
+          <Link aria-current="page"  onClick={handleView}>
             view
           </Link>
         </NavbarItem>

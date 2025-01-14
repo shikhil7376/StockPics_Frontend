@@ -13,15 +13,15 @@ export const uploadData = async(data:uploadDataTypes[])=>{
     }
 }
 
-export const getData = async(id:string)=>{
-    try {  
-        const response = await api.get(`/project/getData?userid=${id}`)
-        return response
+export const getData = async (id: string, page: number = 1, limit: number = 10) => {
+    try {
+        const response = await api.get(`/project/getData?userid=${id}&page=${page}&limit=${limit}`);
+        return response.data;  // returning the response data including pagination info
     } catch (error) {
         const err: Error = error as Error;
-        return errorHandle(err);
+        return errorHandle(err); // Handle error if any
     }
-}
+};
 
 export const deleteData = async( id:string, userid:string )=>{
     try {        
