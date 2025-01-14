@@ -9,7 +9,7 @@ import { RootState } from '../../redux/store';
 import { getDataTypes } from '../../interface/dataTypes';
 import DetailModal from '../../components/modal/Modal';
 import { deleteData } from '../../api/project';
-import { updateData } from '../../api/project';
+import { updateData,updateImageOrder } from '../../api/project';
 
 
 const CardView = () => {
@@ -38,7 +38,7 @@ const CardView = () => {
     };
 
     // Function to get the index of the item based on its ID
-    const getTaskPos = (id: string) => data.findIndex(task => task.id === id);
+    const getTaskPos = (id: string) => data.findIndex(data => data.id === id);
 
     // Handle drag end and update data state
     const handleDragEnd = (event: any) => {
@@ -47,10 +47,17 @@ const CardView = () => {
         // If the item is dropped in the same position, no need to update
         if (active.id === over.id) return;
 
-        setData((tasks) => {
+        setData((data) => {
             const originalPos = getTaskPos(active.id);
             const newPos = getTaskPos(over.id);
-            return arrayMove(tasks, originalPos, newPos); // Reorder the items
+            const updatedData = arrayMove(data, originalPos, newPos);
+            updateImageOrder(updatedData).then((response) => {
+                if (response?.data?.success) {
+                    console.log("Order saved successfully!");
+                }
+            });
+            return updatedData;
+            // return arrayMove(data, originalPos, newPos); 
         });
     };
 

@@ -42,3 +42,13 @@ export const updateData = async(updatedFields:getDataTypes)=>{
         return errorHandle(err); 
      }
 }
+
+export const updateImageOrder = async (reorderedData: getDataTypes[]) => {
+    try {
+        const response = await api.put(`/project/update-image-order`, { reorderedData });
+        return response;
+    } catch (error) {
+        const err: Error = error as Error;
+        return errorHandle(err);
+    }
+};
