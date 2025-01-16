@@ -1,4 +1,4 @@
-import React,{ FormEvent } from 'react';
+import { FormEvent } from 'react';
 import { InputOtp } from '@nextui-org/react';
 import { motion } from 'framer-motion';
 import { useState,useEffect } from 'react';

@@ -1,4 +1,4 @@
-import React, { FormEvent, useState, useEffect } from 'react';
+import  { FormEvent, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { resendOtp, resetOtp, otpVerify } from '../../api/user';

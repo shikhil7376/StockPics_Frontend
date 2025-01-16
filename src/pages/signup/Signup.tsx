@@ -1,4 +1,4 @@
-import React, { FormEvent } from "react";
+import  { FormEvent } from "react";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import errorHandle from "../../api/error";
