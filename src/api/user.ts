@@ -1,4 +1,4 @@
-import { signupTypes,uploadDataTypes } from "../interface/dataTypes";
+import { signupTypes } from "../interface/dataTypes";
 import api from "../services/axios";
 import errorHandle from "./error";
 

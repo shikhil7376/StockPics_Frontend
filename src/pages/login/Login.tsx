@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom'; // Ensure you're using React Router for navigation
 import validator from "validator";

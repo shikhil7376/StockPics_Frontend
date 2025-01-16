@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { getData } from '../../api/project';
 import errorHandle from '../../api/error';
 import { closestCorners, DndContext } from '@dnd-kit/core';
