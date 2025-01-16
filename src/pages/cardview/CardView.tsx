@@ -32,7 +32,7 @@ const CardView = () => {
 
     const fetchUserData = async (page: number) => {
         try {
-            const response = await getData(userdata?._id as string, page, 8);
+            const response = await getData( page, 8);
             if (response && response.data) {
                 setData(response.data);
                 setPagination({
@@ -81,7 +81,7 @@ const CardView = () => {
 
     const handleDelete = async (id: string) => {
         try {
-            const response = await deleteData(id, userdata?._id as string)
+            const response = await deleteData(id)
             if (response?.data.success) {
                 setData((prevItems) => prevItems.filter(item => item.id !== id))
             }

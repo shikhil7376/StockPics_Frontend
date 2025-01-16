@@ -13,9 +13,9 @@ export const uploadData = async(data:uploadDataTypes[])=>{
     }
 }
 
-export const getData = async (id: string, page: number = 1, limit: number = 10) => {
+export const getData = async ( page: number = 1, limit: number = 10) => {
     try {
-        const response = await api.get(`/project/getData?userid=${id}&page=${page}&limit=${limit}`);
+        const response = await api.get(`/project/getData?page=${page}&limit=${limit}`);
         return response.data;  // returning the response data including pagination info
     } catch (error) {
         const err: Error = error as Error;
@@ -23,9 +23,9 @@ export const getData = async (id: string, page: number = 1, limit: number = 10) 
     }
 };
 
-export const deleteData = async( id:string, userid:string )=>{
+export const deleteData = async( id:string)=>{
     try {        
-       const response = await api.delete(`/project/deleteData/${id}/${userid}`) 
+       const response = await api.delete(`/project/deleteData/${id}`) 
        return response
     } catch (error) {
         const err: Error = error as Error;
