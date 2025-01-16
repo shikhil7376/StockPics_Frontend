@@ -4,7 +4,7 @@ import { useState } from "react";
 import errorHandle from "../../api/error";
 import toast from "react-hot-toast";
 import { signupTypes } from "../../interface/dataTypes";
-import { data, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import validator from "validator";
 import { signup } from "../../api/user";
 

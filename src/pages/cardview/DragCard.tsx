@@ -7,11 +7,10 @@ import { getDataTypes } from '../../interface/dataTypes';
 interface DragCardProps{
     id:string;
     item:getDataTypes;
-    setData: React.Dispatch<React.SetStateAction<getDataTypes[]>>;
     onImageClick: (item: getDataTypes) => void;
 }
 
-const DragCard: React.FC<DragCardProps> = ({ id, item, setData,onImageClick }) => {
+const DragCard: React.FC<DragCardProps> = ({ id, item,onImageClick }) => {
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });
 
     const style = {

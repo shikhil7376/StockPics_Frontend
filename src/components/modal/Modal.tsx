@@ -88,7 +88,7 @@ const DetailModal: React.FC<DetailModalProps> = ({ isOpen, onOpenChange, item, o
     return (
         <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
       <ModalContent>
-        {(onClose) => (
+        {() => (
           <>
             <ModalHeader className="flex flex-col gap-1">
             {isLoading ? (

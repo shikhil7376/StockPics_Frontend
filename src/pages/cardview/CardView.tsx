@@ -4,8 +4,6 @@ import errorHandle from '../../api/error';
 import { closestCorners, DndContext } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy, arrayMove } from '@dnd-kit/sortable';
 import DragCard from './DragCard';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../redux/store';
 import { getDataTypes } from '../../interface/dataTypes';
 import DetailModal from '../../components/modal/Modal';
 import { deleteData } from '../../api/project';
@@ -14,7 +12,6 @@ import { updateData, updateImageOrder } from '../../api/project';
 
 const CardView = () => {
     const [data, setData] = useState<getDataTypes[]>([]);
-    const userdata = useSelector((state: RootState) => state.user.userdata);
     const [selectedItem, setSelectedItem] = useState<getDataTypes | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [pagination, setPagination] = useState({
@@ -123,7 +120,7 @@ const CardView = () => {
                 <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-5 p-3'>
                     <SortableContext items={data} strategy={verticalListSortingStrategy}>
                         {data.map((item) => (
-                            <DragCard id={item.id} item={item} setData={setData} key={item.id} onImageClick={handleImageClick} />
+                            <DragCard id={item.id} item={item}  key={item.id} onImageClick={handleImageClick} />
                         ))}
                     </SortableContext>
                 </div>
