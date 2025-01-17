@@ -116,7 +116,8 @@ const CardView = () => {
 
     return (
         <div className='flex flex-col items-center'>
-            <DndContext collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
+            {data.length>0?(<>
+                <DndContext collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
                 <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-5 p-3'>
                     <SortableContext items={data} strategy={verticalListSortingStrategy}>
                         {data.map((item) => (
@@ -133,9 +134,13 @@ const CardView = () => {
                     onDelete={handleDelete}
                     onUpdate={handleUpdate}
                 />
-            )}
-
-            <div className="pagination-controls flex gap-4">
+            )} 
+            </>):(<div className=' mt-5'>
+            <p className='text-red-600'>No Posts uploaded yet !!!</p>
+            </div>)}
+    {
+        data.length>0 && (<>
+           <div className="pagination-controls flex gap-4 p-5 ">
                 <button
                     onClick={() => handlePageChange(pagination.currentPage - 1)}
                     disabled={pagination.currentPage === 1}
@@ -153,6 +158,10 @@ const CardView = () => {
                 </button>
 
             </div>
+        
+        </>)
+    }
+           
         </div>
     );
 };
