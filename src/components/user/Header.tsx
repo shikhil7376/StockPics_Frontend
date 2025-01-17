@@ -46,7 +46,7 @@ const handleView = ()=>{
     <Navbar>
       <NavbarBrand>
         <AcmeLogo  />
-        <p className="font-bold text-inherit">STOCK_PICS</p>
+        <p onClick={()=>navigate('/')} className="font-bold text-inherit">STOCK_PICS</p>
       </NavbarBrand>
       <NavbarContent className="" justify="center">
         <NavbarItem className='hidden sm:flex gap-4'>

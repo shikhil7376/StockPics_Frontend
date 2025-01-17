@@ -122,7 +122,7 @@ const DetailModal: React.FC<DetailModalProps> = ({ isOpen, onOpenChange, item, o
                   type="file"
                   disabled={!isEditing}
                   onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
-                  className="mt-2  w-[400px] overflow-hide "
+                  className="mt-2  md:w-[400px] overflow-hide "
                 />
                 <Textarea
                   className="w-[300px]"

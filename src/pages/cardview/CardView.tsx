@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { getData } from '../../api/project';
 import errorHandle from '../../api/error';
-import { closestCorners, DndContext } from '@dnd-kit/core';
-import { SortableContext, verticalListSortingStrategy, arrayMove } from '@dnd-kit/sortable';
+import { closestCorners, DndContext, KeyboardSensor, PointerSensor, TouchSensor, useSensor,useSensors } from '@dnd-kit/core';
+import { SortableContext, verticalListSortingStrategy, arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
 import DragCard from './DragCard';
 import { getDataTypes } from '../../interface/dataTypes';
 import DetailModal from '../../components/modal/Modal';
@@ -19,8 +19,7 @@ const CardView = () => {
         totalPages: 1,
         totalCount: 0,
     });
-
-    console.log(pagination.currentPage);
+    const [loading, setLoading] = useState(true);
 
 
     useEffect(() => {
@@ -28,6 +27,7 @@ const CardView = () => {
     }, [pagination.currentPage]);
 
     const fetchUserData = async (page: number) => {
+        setLoading(true);
         try {
             const response = await getData( page, 8);
             if (response && response.data) {
@@ -44,6 +44,8 @@ const CardView = () => {
             } else {
                 errorHandle(new Error("An unexpected error occurred."));
             }
+        }finally{
+            setLoading(false);
         }
     };
 
@@ -114,55 +116,74 @@ const CardView = () => {
         }
     };
 
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(TouchSensor),
+    useSensor(KeyboardSensor,{coordinateGetter:sortableKeyboardCoordinates})
+  )
+
+
     return (
-        <div className='flex flex-col items-center'>
-            {data.length>0?(<>
-                <DndContext collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
-                <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-5 p-3'>
-                    <SortableContext items={data} strategy={verticalListSortingStrategy}>
-                        {data.map((item) => (
-                            <DragCard id={item.id} item={item}  key={item.id} onImageClick={handleImageClick} />
-                        ))}
-                    </SortableContext>
-                </div>
-            </DndContext>
-            {selectedItem && (
-                <DetailModal
-                    isOpen={isModalOpen}
-                    onOpenChange={setIsModalOpen}
-                    item={selectedItem}
-                    onDelete={handleDelete}
-                    onUpdate={handleUpdate}
-                />
-            )} 
-            </>):(<div className=' mt-5'>
-            <p className='text-red-600'>No Posts uploaded yet !!!</p>
-            </div>)}
-    {
-        data.length>0 && (<>
-           <div className="pagination-controls flex gap-4 p-5 ">
-                <button
-                    onClick={() => handlePageChange(pagination.currentPage - 1)}
-                    disabled={pagination.currentPage === 1}
-                    className={`px-4 py-2  font-semibold text-xl bg-gray-300 text-white rounded-full hover:bg-gray-400 focus:outline-none ${pagination.currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''}`}
-                >
-                    {"<"}
-                </button>
-
-                <button
-                    onClick={() => handlePageChange(pagination.currentPage + 1)}
-                    disabled={pagination.currentPage === pagination.totalPages}
-                    className={`px-4 py-2 font-semibold text-xl bg-gray-300 text-white rounded-full hover:bg-gray-400 focus:outline-none ${pagination.currentPage === pagination.totalPages ? 'cursor-not-allowed opacity-50' : ''}`}
-                >
-                    {">"}
-                </button>
-
+        <div className="flex flex-col items-center">
+      {loading ? (
+        <div className="mt-5">Loading...</div> // Show loading indicator while fetching data
+      ) : data.length > 0 ? (
+        <>
+          <DndContext collisionDetection={closestCorners} onDragEnd={handleDragEnd} sensors={sensors}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-5 p-3">
+              <SortableContext items={data} strategy={verticalListSortingStrategy}>
+                {data.map((item) => (
+                  <DragCard
+                    id={item.id}
+                    item={item}
+                    key={item.id}
+                    onImageClick={handleImageClick}
+                  />
+                ))}
+              </SortableContext>
             </div>
-        
-        </>)
-    }
-           
+          </DndContext>
+          {selectedItem && (
+            <DetailModal
+              isOpen={isModalOpen}
+              onOpenChange={setIsModalOpen}
+              item={selectedItem}
+              onDelete={handleDelete}
+              onUpdate={handleUpdate}
+            />
+          )}
+        </>
+      ) : (
+        <div className="mt-5">
+          <p className="text-red-600">No Posts uploaded yet !!!</p>
         </div>
+      )}
+      {data.length > 0 && (
+        <>
+          <div className="pagination-controls flex gap-4 p-5">
+            <button
+              onClick={() => handlePageChange(pagination.currentPage - 1)}
+              disabled={pagination.currentPage === 1}
+              className={`px-4 py-2 font-semibold text-xl bg-gray-300 text-white rounded-full hover:bg-gray-400 focus:outline-none ${
+                pagination.currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''
+              }`}
+            >
+              {'<'}
+            </button>
+
+            <button
+              onClick={() => handlePageChange(pagination.currentPage + 1)}
+              disabled={pagination.currentPage === pagination.totalPages}
+              className={`px-4 py-2 font-semibold text-xl bg-gray-300 text-white rounded-full hover:bg-gray-400 focus:outline-none ${
+                pagination.currentPage === pagination.totalPages ? 'cursor-not-allowed opacity-50' : ''
+              }`}
+            >
+              {'>'}
+            </button>
+          </div>
+        </>
+      )}
+    </div>
     );
 };
 
